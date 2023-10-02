@@ -6,7 +6,8 @@ import * as Yup from 'yup';
 
 
 
-import { heroAdded, heroAdding } from "../../actions";
+import { heroAdded, heroAdding } from "../heroesList/heroesSlice";
+import { selectAll } from '../heroesFilters/filtersSlice'
 import { useHttp } from "../../hooks/http.hook";
 
 
@@ -15,9 +16,10 @@ const HeroesAddForm = () => {
     const { request } = useHttp();
     const dispatch = useDispatch();
     const heroAddingStatus = useSelector(state => state.heroes.heroAddingStatus)
-    const filters = useSelector(state => state.filters.filters)
+    const filters = useSelector(selectAll)
+    const filterError = useSelector(state => state.filters.error)
+
     const [error, setError] = useState(false);
-    console.log('HeroesAddForm')
 
     const addHero = (values) => {
         const newHero = {
@@ -47,7 +49,7 @@ const HeroesAddForm = () => {
             return <option >Помилка загрузки</option>
         }
     }
-    const View = error ?
+    const View = error || filterError ?
         <div className="alert alert-danger mt-2">{'Помилка при додаванні героя. Будь ласка, спробуйте пізніше.'}</div> :
         <button type="submit" className="btn btn-primary">Створити</button>
 

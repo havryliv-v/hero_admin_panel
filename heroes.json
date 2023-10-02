@@ -19,24 +19,17 @@
       "element": "wind"
     },
     {
-      "id": "63fc203a-c740-47e2-bb01-a1ebf6469f7e",
-      "name": "фіафіафіа",
-      "description": "фіпфіфіаф",
-      "element": "fire"
-    },
-    {
       "id": "8006d4a3-5d3c-4d1d-9a89-63f34f1284de",
       "name": "dfgasfasfag",
       "description": "asdagfagas",
       "element": "water"
+    },
+    {
+      "id": "8d6179bc-17a1-427c-9234-cd13b65c301b",
+      "name": "dgsdgaag",
+      "description": "afsasdgsdgs",
+      "element": "wind"
     }
-  ],
-  "filterss": [
-    "all",
-    "fire",
-    "water",
-    "wind",
-    "earth"
   ],
   "filters": [
     {
