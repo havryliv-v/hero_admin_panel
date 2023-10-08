@@ -6,20 +6,20 @@ import * as Yup from 'yup';
 
 
 
-import { heroAdded, heroAdding } from "../heroesList/heroesSlice";
+import store from '../../store';
 import { selectAll } from '../heroesFilters/filtersSlice'
-import { useHttp } from "../../hooks/http.hook";
+import { useCreateHeroMutation } from '../../api/apiSlice';
 
 
 const HeroesAddForm = () => {
 
-    const { request } = useHttp();
-    const dispatch = useDispatch();
-    const heroAddingStatus = useSelector(state => state.heroes.heroAddingStatus)
-    const filters = useSelector(selectAll)
     const filterError = useSelector(state => state.filters.error)
+    const [createHero] = useCreateHeroMutation()
 
-    const [error, setError] = useState(false);
+    const [error] = useState(false);
+
+    const { filtersLoadingStatus } = useSelector(state => state.filters);
+    const filters = selectAll(store.getState());
 
     const addHero = (values) => {
         const newHero = {
@@ -28,13 +28,7 @@ const HeroesAddForm = () => {
             description: values.description,
             element: values.element,
         }
-        heroAdding()
-        request(`http://localhost:3001/heroes`, 'POST', JSON.stringify(newHero))
-            .then(dispatch(heroAdded(newHero)))
-            .catch(error => {
-                console.error('Помилка при додаванні героя', error)
-                setError(true)
-            })
+        createHero(newHero).unwrap()
     }
     const renderOptions = (filters, status) => {
         if (status === 'loading') {
@@ -111,7 +105,7 @@ const HeroesAddForm = () => {
                         as="select"
                     >
                         <option value="fire">Я володію елементом...</option>
-                        {renderOptions(filters, heroAddingStatus)}
+                        {renderOptions(filters, filtersLoadingStatus)}
 
                     </Field>
                     <ErrorMessage style={{ color: 'red' }} component="div" className="error" name="element" />

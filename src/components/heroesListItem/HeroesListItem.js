@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { heroesDeleting } from "../heroesList/heroesSlice";
 import { useHttp } from "../../hooks/http.hook";
 import { memo } from "react";
+import { useDeleteHeroMutation } from "../../api/apiSlice";
 
 
 const HeroesListItem = ({ id, name, description, element }) => {
@@ -24,12 +24,17 @@ const HeroesListItem = ({ id, name, description, element }) => {
     }
     const dispatch = useDispatch();
     const { request } = useHttp();
+    const [deleteHero] = useDeleteHeroMutation()
 
-    const deleteHero = async () => {
-        request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-            .then(dispatch(heroesDeleting(id)))
-            .catch(error => console.error('Помилка при видаленні героя', error))
-    };
+
+    const onDelete = () => {
+        deleteHero(id)
+    }
+    // const deleteHero = async () => {
+    //     request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+    //         .then(dispatch(heroesDeleting(id)))
+    //         .catch(error => console.error('Помилка при видаленні героя', error))
+    // };
 
     return (
         <li
@@ -44,7 +49,7 @@ const HeroesListItem = ({ id, name, description, element }) => {
                 <p className="card-text">{description}</p>
             </div>
             <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
-                <button onClick={deleteHero} type="button" className="btn-close btn-close" aria-label="Close"></button>
+                <button onClick={onDelete} type="button" className="btn-close btn-close" aria-label="Close"></button>
             </span>
         </li>
     )

@@ -1,23 +1,35 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
-import { fetchHeroes, filteredHeroesSelector } from './heroesSlice';
+import { useGetHeroesQuery } from '../../api/apiSlice';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
 const HeroesList = () => {
-    const filteredHeroes = useSelector(filteredHeroesSelector)
-    const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
-    const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(fetchHeroes())
-        // eslint-disable-next-line
-    }, []);
+    const { data: heroes = [],
+        isLoading,
+        isFetching,
+        isSuccess,
+        isError,
+    } = useGetHeroesQuery();
 
-    if (heroesLoadingStatus === "loading") {
+    const currentFilter = useSelector(state => state.filters.currentFilter)
+
+    const filteredHeroes = useMemo(() => {
+        const filteredHeroes = heroes.slice()
+        if (currentFilter === 'all') {
+            return filteredHeroes;
+        } else {
+            return filteredHeroes.filter(item => item.element === currentFilter)
+        }
+    }, [heroes, currentFilter])
+
+
+
+    if (isLoading) {
         return <Spinner />;
-    } else if (heroesLoadingStatus === "error") {
+    } else if (isError) {
         return <h5 className="text-center mt-5">Помилка завантаження</h5>
     }
     const renderHeroesList = (arr) => {

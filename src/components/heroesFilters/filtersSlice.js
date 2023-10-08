@@ -8,7 +8,8 @@ const filtersAdapter = createEntityAdapter({
 
 const initialState = filtersAdapter.getInitialState({
    currentFilter: 'all',
-   error: ''
+   error: '',
+   filtersLoadingStatus: 'idle'
 });
 
 export const fetchFilters = createAsyncThunk(
@@ -26,10 +27,15 @@ const filtersSlice = createSlice({
    },
    extraReducers: (builder) => {
       builder
+         .addCase(fetchFilters.pending, state => { state.filtersLoadingStatus = 'loading' })
          .addCase(fetchFilters.fulfilled, (state, action) => {
             filtersAdapter.setAll(state, action.payload)
+            state.filtersLoadingStatus = 'idle'
          })
-         .addCase(fetchFilters.rejected, (state, action) => { state.error = action.payload })
+         .addCase(fetchFilters.rejected, (state, action) => {
+            state.error = action.payload
+            state.filtersLoadingStatus = 'error'
+         })
          .addDefaultCase(() => { })
    }
 })
