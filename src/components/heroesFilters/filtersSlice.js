@@ -16,7 +16,7 @@ export const fetchFilters = createAsyncThunk(
    'filters/fetchFilters',
    () => {
       const { request } = useHttp();
-      return request("http://localhost:3001/filters")
+      return request("https://6522e06bf43b179384150021.mockapi.io/filters")
    }
 )
 const filtersSlice = createSlice({

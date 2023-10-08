@@ -30,11 +30,6 @@ const HeroesListItem = ({ id, name, description, element }) => {
     const onDelete = () => {
         deleteHero(id)
     }
-    // const deleteHero = async () => {
-    //     request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-    //         .then(dispatch(heroesDeleting(id)))
-    //         .catch(error => console.error('Помилка при видаленні героя', error))
-    // };
 
     return (
         <li
