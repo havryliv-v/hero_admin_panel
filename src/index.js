@@ -15,3 +15,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+// "start": "concurrently \"react-scripts --openssl-legacy-provider start\" \"npx json-server heroes.json --port 3001\"",
